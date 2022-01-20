@@ -72,7 +72,6 @@ async function handleRequest(request) {
     const result = await faunaClient.query(
       Get(Match(Index('registry_by_shortId'), shortId))
     );
-    console.log('-->', result.data.times);
     const url = result.data.url;
     if (url) {
       await faunaClient.query(
