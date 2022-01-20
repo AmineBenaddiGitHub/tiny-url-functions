@@ -27,15 +27,17 @@ export const allowedOrigins = [
     "https://url-stitou-functions.aminbe.workers.dev"
 ];
 
-export const appHeaders = origin => ({
-    'Access-Control-Allow-Headers': '*',
-    'Access-Control-Allow-Methods': 'POST',
-    'Access-Control-Allow-Origin': origin,
-    'Content-Type': 'application/json',
-});
+export function appHeaders(origin) {
+    return {
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Origin': origin,
+        'Content-Type': 'application/json',
+    }
+};
 
-export const checkOrigin = request => {
-    const origin = request.headers.get("Origin")
-    const foundOrigin = allowedOrigins.find(allowedOrigin => allowedOrigin.includes(origin))
-    return foundOrigin ? foundOrigin : allowedOrigins[0]
+export function checkOrigin(request) {
+    const origin = request.headers.get("Origin");
+    const foundOrigin = allowedOrigins.find(allowedOrigin => allowedOrigin.includes(origin));
+    return foundOrigin ? foundOrigin : "https://url-stitou-functions.aminbe.workers.dev";
 };
