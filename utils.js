@@ -28,7 +28,7 @@ export const allowedOrigins = [
 ];
 
 export const appHeaders = origin => ({
-    'Access-Control-Allow-Headers': origin,
+    'Access-Control-Allow-Headers': '*',
     'Access-Control-Allow-Methods': 'POST',
     'Access-Control-Allow-Origin': origin,
     'Content-Type': 'application/json',
