@@ -21,9 +21,20 @@ export function getFaunaError(error) {
     return { code, description, status };
 }
 
-export const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE',
-    'Access-Control-Allow-Headers': 'referer, origin, content-type',
-    'content-type': 'application/json'
-}
+export const allowedOrigins = [
+    "http://localhost:3000",
+    "https://url-stitou.pages.dev"
+];
+
+export const appHeaders = origin => ({
+    'Access-Control-Allow-Headers': origin,
+    'Access-Control-Allow-Methods': 'POST',
+    'Access-Control-Allow-Origin': origin,
+    'Content-Type': 'application/json',
+});
+
+export const checkOrigin = request => {
+    const origin = request.headers.get("Origin")
+    const foundOrigin = allowedOrigins.find(allowedOrigin => allowedOrigin.includes(origin))
+    return foundOrigin ? foundOrigin : allowedOrigins[0]
+};

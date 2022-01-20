@@ -1,7 +1,7 @@
 import faunadb from 'faunadb';
 import parse from 'parse-url';
 import { customAlphabet } from 'nanoid';
-import { corsHeaders, getFaunaError } from './utils'
+import { appHeaders, getFaunaError, checkOrigin } from './utils'
 
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
@@ -19,9 +19,10 @@ const { Create, Collection, Match, Index, Get, Ref, Paginate, Sum, Delete, Add, 
  */
 async function handleRequest(request) {
   const api = parse(request.url);
+  const allowedOrigin = checkOrigin(request);
   if (api.pathname === '/shorten' && request.method === 'OPTIONS') {
     return new Response('OK', {
-      headers: corsHeaders,
+      headers: appHeaders(allowedOrigin),
       status: 200
     });
   }
@@ -44,7 +45,7 @@ async function handleRequest(request) {
 
       const body = JSON.stringify({ url: url, shortId: shortId });
       return new Response(body, {
-        headers: corsHeaders,
+        headers: appHeaders(allowedOrigin),
         status: 200
       });
     } catch (error) {
@@ -52,7 +53,7 @@ async function handleRequest(request) {
       return new Response(
         JSON.stringify({ message: faunaError }),
         {
-          headers: corsHeaders,
+          headers: appHeaders(allowedOrigin),
           status: faunaError.status
         }
       );
@@ -61,7 +62,7 @@ async function handleRequest(request) {
 
   if (api.pathname === '/access' && request.method === 'OPTIONS') {
     return new Response('OK', {
-      headers: corsHeaders,
+      headers: appHeaders(allowedOrigin),
       status: 200
     });
   }
@@ -82,19 +83,19 @@ async function handleRequest(request) {
         })
       );
       return new Response(JSON.stringify({ url: url, times: result.data.times + 1 }), {
-        headers: corsHeaders,
+        headers: appHeaders(allowedOrigin),
         status: 200
       });
     } else {
       return new Response(JSON.stringify({ url: '', times: 0 }), {
-        headers: corsHeaders,
+        headers: appHeaders(allowedOrigin),
         status: 200
       });
     }
   }
 
   return new Response(JSON.stringify({ message: '404 ... ERROR, not found' }), {
-    headers: corsHeaders,
+    headers: appHeaders(allowedOrigin),
     status: 404
   })
 }
