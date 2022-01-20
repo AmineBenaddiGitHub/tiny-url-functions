@@ -23,7 +23,8 @@ export function getFaunaError(error) {
 
 export const allowedOrigins = [
     "http://localhost:3000",
-    "https://url-stitou.pages.dev"
+    "https://url-stitou.pages.dev",
+    "https://url-stitou-functions.aminbe.workers.dev"
 ];
 
 export const appHeaders = origin => ({
