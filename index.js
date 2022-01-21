@@ -1,7 +1,7 @@
 import faunadb from 'faunadb';
 import parse from 'parse-url';
 import { customAlphabet } from 'nanoid';
-import { appHeaders, getFaunaError, checkOrigin } from './utils'
+import { appHeaders, getFaunaError, isAuthorizedOrigin } from './utils'
 
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
@@ -19,7 +19,7 @@ const { Create, Collection, Match, Index, Get, Ref, Paginate, Sum, Delete, Add, 
  */
 async function handleRequest(request) {
   const api = parse(request.url);
-  const allowedOrigin = checkOrigin(request);
+  const allowedOrigin = isAuthorizedOrigin(request);
   if (api.pathname === '/shorten' && request.method === 'OPTIONS') {
     return new Response('OK', {
       headers: appHeaders(allowedOrigin),

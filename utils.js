@@ -21,7 +21,7 @@ export function getFaunaError(error) {
     return { code, description, status };
 }
 
-export const allowedOrigins = [
+export const whitelistedOrigins = [
     "http://localhost:3000",
     "https://url-stitou.pages.dev",
     "https://url-stitou-functions.aminbe.workers.dev"
@@ -36,8 +36,8 @@ export function appHeaders(origin) {
     }
 };
 
-export function checkOrigin(request) {
-    const origin = request.headers.get("Origin");
-    const foundOrigin = allowedOrigins.find(allowedOrigin => allowedOrigin.includes(origin));
-    return foundOrigin ? foundOrigin : "https://url-stitou-functions.aminbe.workers.dev";
+export function isAuthorizedOrigin(request) {
+    const originURL = request.headers.get("Origin");
+    const isAuthorized = whitelistedOrigins.find(allowedOrigin => allowedOrigin.includes(originURL));
+    return isAuthorized ? isAuthorized : "https://url-stitou-functions.aminbe.workers.dev";
 };
